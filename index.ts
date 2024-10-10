@@ -71,6 +71,11 @@ async function main() {
 
     await Promise.all(promises);
 
+    // Sort store IDs in games
+    for (const game of Object.values(games)) {
+        game.sort((a, b) => a - b);
+    }
+    
     fs.writeFileSync("stores.json", JSON.stringify(stores, null, 4));
     fs.writeFileSync("games.json", JSON.stringify(games, null, 4));
 }
