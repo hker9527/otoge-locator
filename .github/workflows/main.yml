@@ -1,0 +1,30 @@
+name: Update Locator data
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Bun
+      uses: oven-sh/setup-bun@v1
+
+    - name: Set up dependencies
+      run: bun i
+
+    - name: Run index.ts with Bun
+      run: bun run index.ts
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add games.json stores.json
+        git commit -m 'Update data'
+        git push
