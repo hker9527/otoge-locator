@@ -3,7 +3,7 @@ name: Update Locator data
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '1 14 * * *'
 
 jobs:
   update:
