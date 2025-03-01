@@ -337,10 +337,41 @@
 
             const map = L.map("map").setView([36, 138], 6);
 
-            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                maxZoom: 19,
-                attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
-            }).addTo(map);
+            const baseLayers = {
+                "Original": L.tileLayer(
+                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    {
+                        maxZoom: 19,
+                        attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+                    }
+                ),
+                "Cycle": L.tileLayer(
+                    "https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}@2x.png?apikey=6e5478c8a4f54c779f85573c0e399391",
+                    {
+                        maxZoom: 19,
+                        attribution: '© <a href="/copyright">OpenStreetMap contributors</a>. Tiles courtesy of <a href="https://www.thunderforest.com/" target="_blank">Andy Allan</a>. <a href="https://wiki.osmfoundation.org/wiki/Terms_of_Use">Website and API terms</a>'
+                    }
+                ),
+                "Transport": L.tileLayer(
+                    "https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}@2x.png?apikey=6e5478c8a4f54c779f85573c0e399391",
+                    {
+                        maxZoom: 19,
+                        attribution: '© <a href="/copyright">OpenStreetMap contributors</a>. Tiles courtesy of <a href="https://www.thunderforest.com/" target="_blank">Andy Allan</a>. <a href="https://wiki.osmfoundation.org/wiki/Terms_of_Use">Website and API terms</a>'
+                    }
+                ),
+                "Google Map": L.tileLayer(
+                    "http://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=en",
+                    {
+                        maxZoom: 19,
+                        attribution: '© Google'
+                    }
+                )
+            };
+
+            const layer = L.markerClusterGroup();
+
+            L.control.layers(baseLayers, null, { position: "bottomleft" }).addTo(map);
+            baseLayers["Original"].addTo(map);
 
             L.control.locate({
                 locateOptions: {
@@ -368,8 +399,6 @@
             } catch (error) {
                 console.error("Error loading data:", error);
             }
-
-            const layer = L.markerClusterGroup();
 
             const getIcon = (storeId) => {
                 const store = stores[storeId];
