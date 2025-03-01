@@ -134,21 +134,13 @@
                 "green",
                 "blue",
                 "gold"
-            ].map(color => new L.Icon({
-                iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
-                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                shadowSize: [41, 41]
-            }));
-
-            // 4 color theorem
-            const prefectureIcons = [1, 0, 1, 2, 3, 0, 1, 0, 2, 3, 1, 3, 2, 1, 2, 3, 1, 0, 3, 0, 2, 2, 3, 0, 1, 3, 0, 1, 2, 1, 2, 3, 0, 1, 0, 3, 2, 0, 1, 1, 0, 2, 3, 2, 1, 0, 2].map(color => colorIcons[color]);
-
             try {
-                stores = await (await fetch("stores.json")).json();
-                games = await (await fetch("games.json")).json();
+                const [storesResponse, gamesResponse] = await Promise.all([
+                    fetch("stores.json"),
+                    fetch("games.json")
+                ]);
+                stores = await storesResponse.json();
+                games = await gamesResponse.json();
             } catch (error) {
                 console.error("Error loading data:", error);
             }
