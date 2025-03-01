@@ -331,11 +331,28 @@
             }
         })();
 
+        const center = (() => {
+            try {
+                return JSON.parse(localStorage.getItem("center").toString());
+            } catch (error) {
+                localStorage.removeItem("center");
+                return {
+                    lat: 36.01,
+                    lng: 138,
+                    zoom: 5
+                }
+            }
+        })();
+
         document.addEventListener("DOMContentLoaded", async () => {
             let games = {};
             let stores = {};
 
-            const map = L.map("map").setView([36, 138], 6);
+            const map = L.map("map").setView(center, center.zoom);
+
+            map.on("moveend", () => {
+                autoSave();
+            });
 
             const baseLayers = {
                 "Original": L.tileLayer(
@@ -489,6 +506,10 @@
             const autoSave = () => {
                 localStorage.setItem("checked", JSON.stringify(checked));
                 localStorage.setItem("favorites", JSON.stringify(favorites));
+                localStorage.setItem("center", JSON.stringify({
+                    ...map.getCenter(),
+                    zoom: map.getZoom()
+                }));
             };
 
             const redraw = () => {
