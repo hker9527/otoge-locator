@@ -31,12 +31,32 @@
             height: 100%;
         }
 
-        #gameSelect {
+        #right-menu {
             position: absolute;
             top: 10px;
             right: 10px;
             z-index: 1000;
             width: 8em;
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+        }
+
+        #right-menu>form {
+            background-color: white;
+            border: 1px solid #6c757d;
+            border-radius: 0.25rem;
+            padding: 0.5em;
+        }
+
+        #right-menu>form label {
+            font-size: 0.8em;
+        }
+
+        #prefecture-select>div {
+            height: 8em;
+            overflow-y: auto;
+        }
 
         div[class*=glyph]>.mdi {
             font-size: 1em !important;
@@ -60,7 +80,202 @@
 </head>
 
 <body>
-    <form id="gameSelect" class="bg-white border border-secondary rounded p-2">
+    <div id="right-menu">
+        <form id="prefecture-select">
+            <small>Prefecture</small>
+            <div>
+                <label>
+                    <input type="checkbox" name="prefecture" value="0" checked>
+                    北海道
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="1" checked>
+                    青森県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="2" checked>
+                    岩手県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="3" checked>
+                    宮城県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="4" checked>
+                    秋田県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="5" checked>
+                    山形県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="6" checked>
+                    福島県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="7" checked>
+                    茨城県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="8" checked>
+                    栃木県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="9" checked>
+                    群馬県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="10" checked>
+                    埼玉県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="11" checked>
+                    千葉県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="12" checked>
+                    東京都
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="13" checked>
+                    神奈川県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="14" checked>
+                    新潟県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="15" checked>
+                    富山県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="16" checked>
+                    石川県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="17" checked>
+                    福井県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="18" checked>
+                    山梨県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="19" checked>
+                    長野県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="20" checked>
+                    岐阜県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="21" checked>
+                    静岡県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="22" checked>
+                    愛知県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="23" checked>
+                    三重県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="24" checked>
+                    滋賀県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="25" checked>
+                    京都府
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="26" checked>
+                    大阪府
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="27" checked>
+                    兵庫県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="28" checked>
+                    奈良県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="29" checked>
+                    和歌山県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="30" checked>
+                    鳥取県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="31" checked>
+                    島根県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="32" checked>
+                    岡山県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="33" checked>
+                    広島県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="34" checked>
+                    山口県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="35" checked>
+                    徳島県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="36" checked>
+                    香川県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="37" checked>
+                    愛媛県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="38" checked>
+                    高知県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="39" checked>
+                    福岡県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="40" checked>
+                    佐賀県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="41" checked>
+                    長崎県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="42" checked>
+                    熊本県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="43" checked>
+                    大分県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="44" checked>
+                    宮崎県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="45" checked>
+                    鹿児島県
+                </label>
+                <label>
+                    <input type="checkbox" name="prefecture" value="46" checked>
+                    沖縄県
+                </label>
+            </div>
+        </form>
+        <form id="game-select">
+            <small>Must have...</small>
         <label>
             <input type="checkbox" name="game" value="88">
             Ongeki
@@ -74,6 +289,7 @@
             Chunithm
         </label>
     </form>
+    </div>
 
     <div id="map"></div>
 
