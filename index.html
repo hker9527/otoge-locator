@@ -37,6 +37,21 @@
             right: 10px;
             z-index: 1000;
             width: 8em;
+
+        div[class*=glyph]>.mdi {
+            font-size: 1em !important;
+        }
+
+        div.marker-color-red {
+            filter: hue-rotate(120deg);
+        }
+
+        div.marker-color-green {
+            filter: hue-rotate(240deg);
+        }
+
+        div.marker-color-gold {
+            filter: hue-rotate(171deg);
         }
     </style>
 
@@ -62,14 +77,42 @@
 
     <div id="map"></div>
 
+    <template id="popup">
+        <div>
+            <b class="store-name"></b>
+            <br>
+            <a href="" target="_blank">
+                <img src='https://upload.wikimedia.org/wikipedia/commons/3/39/Google_Maps_icon_%282015-2020%29.svg'
+                    width='16' height='16'>
+                <span class="address"></span>
+            </a>
+            <br>
+            <table class="table table-sm">
+                <tbody></tbody>
+            </table>
+
+            <div class="btn-group btn-group-sm" role="group"></div>
+        </div>
+    </template>
+
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
             const gameNames = {
                 88: "Ongeki",
                 96: "Maimai",
                 109: "Chunithm"
             };
 
+        // Map of storeId -> favoriteType
+        const favorites = (() => {
+            try {
+                return JSON.parse(localStorage.getItem("favorites")) || {};
+            } catch (error) {
+                localStorage.removeItem("favorites");
+                return {};
+            }
+        })();
+
+        document.addEventListener("DOMContentLoaded", async () => {
             let games = {};
             let stores = {};
 
@@ -110,31 +153,91 @@
                 console.error("Error loading data:", error);
             }
 
-            const markers = L.markerClusterGroup();
+            const layer = L.markerClusterGroup();
 
-            const addMarkers = (storeIds) => {
-                markers.clearLayers();
+            const getIcon = (storeId) => {
+                const store = stores[storeId];
+                const favoriteType = favorites[storeId];
 
-                for (const storeId of storeIds) {
-                    const store = stores[storeId];
-                    const marker = L.marker([store.lat, store.lon], { icon: prefectureIcons[store.prefecture] });
-                    marker.bindPopup(`
-                        <b>${store.name}</b>
-                        <br>
-                        <a href="https://maps.google.com/maps/search/${encodeURIComponent(store.name)}/@${store.lat},${store.lon},16z" target="_blank">
-                            <img src='https://upload.wikimedia.org/wikipedia/commons/3/39/Google_Maps_icon_%282015-2020%29.svg' width='16' height='16'>
-                            ${store.address}
-                        </a>
-                        <br>
-                        ${Object.keys(games).map(gameId => gameNames[gameId] + "\t" + (games[gameId].includes(+storeId) ? "○" : "×")).join("<br>")}
-                    `);
-                    markers.addLayer(marker);
-                }
-
-                map.addLayer(markers);
+                return new L.Icon.Glyph(favoriteType ? {
+                    prefix: "mdi",
+                    glyph: favoriteType,
+                    className: `marker-color-${prefectureColors[store.prefecture]} glyph-${favoriteType}`
+                } : {
+                    prefix: "",
+                    glyph: " ",
+                    className: `marker-color-${prefectureColors[store.prefecture]}`
+                })
             };
 
-            addMarkers(Object.keys(stores));
+            const createMarker = (storeId) => {
+                const store = stores[storeId];
+                const favoriteType = favorites[storeId];
+
+                const marker = L.marker([store.lat, store.lon], {
+                    icon: getIcon(storeId)
+                });
+
+                const popupClone = document.getElementById("popup").content.cloneNode(true).firstElementChild;
+                popupClone.querySelector(".store-name").textContent = store.name;
+                popupClone.querySelector("a").href = `https://maps.google.com/maps/search/${encodeURIComponent(store.name)}/@${store.lat},${store.lon},16z`;
+                popupClone.querySelector(".address").textContent = store.address;
+                popupClone.querySelector("table tbody").innerHTML = Object.keys(games).map(gameId => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>${gameNames[gameId]}</td>
+                        <td>${games[gameId].includes(+storeId) ? "✅" : "❌"}</td>
+                    `;
+                    return tr.outerHTML;
+                }).join("");
+
+                const favoriteButtons = popupClone.querySelector(".btn-group");
+                for (const type of [
+                    "heart",
+                    "star",
+                    "alert",
+                    "check-bold",
+                    "close-thick",
+                    "help-circle"
+                ]) {
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.classList.add("btn", "text-light", `btn-${favoriteType === type ? "success" : "secondary"}`);
+                    button.addEventListener("click", () => {
+                        if (button.classList.contains("btn-success")) {
+                            delete favorites[storeId];
+                        } else {
+                            favorites[storeId] = type;
+                        }
+                        autoSave();
+
+                        for (const _button of [...favoriteButtons.querySelectorAll("button")]) {
+                            if (favorites[storeId]) {
+                                _button.classList.toggle("btn-success", _button === button);
+                                _button.classList.toggle("btn-secondary", _button !== button);
+                            } else {
+                                _button.classList.replace("btn-success", "btn-secondary");
+                            }
+                        }
+
+                        marker.setIcon(getIcon(storeId));
+                    });
+                    button.innerHTML = `<i class="mdi mdi-${type}"></i>`;
+                    favoriteButtons.appendChild(button);
+                }
+
+                marker.bindPopup(popupClone);
+                return marker;
+            };
+
+            const addMarkers = (storeIds) => {
+                for (const storeId of storeIds) {
+                    const marker = createMarker(storeId);
+                    layer.addLayer(marker);
+                }
+
+                map.addLayer(layer);
+            };
 
             const checked = {
                 88: false,
@@ -144,6 +247,7 @@
 
             const autoSave = () => {
                 localStorage.setItem("checked", JSON.stringify(checked));
+                localStorage.setItem("favorites", JSON.stringify(favorites));
             };
 
             const redraw = () => {
