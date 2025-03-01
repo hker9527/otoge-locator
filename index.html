@@ -475,14 +475,16 @@
 
                 layer.clearLayers();
                 addMarkers(selectedStores);
-
-                checked[checkbox.value] = checkbox.checked;
-                autoSave();
             };
 
             const gameSelectForm = document.getElementById("game-select");
             for (const checkbox of gameSelectForm.querySelectorAll("input")) {
-                checkbox.addEventListener("change", redraw);
+                checkbox.addEventListener("change", () => {
+                    checked[checkbox.value] = checkbox.checked;
+                    autoSave();
+
+                    redraw();
+                });
             }
 
             try {
