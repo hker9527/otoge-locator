@@ -526,9 +526,10 @@
             const redraw = () => {
                 const formData = new FormData(gameSelectForm);
                 const selectedGames = formData.getAll("game");
-                const selectedStores = Object.keys(stores).filter(storeId => {
-                    return selectedGames.every(gameId => games[gameId].includes(+storeId));
-                });
+                const selectedStores = Object.keys(stores).filter(storeId => 
+                    selectedGames.every(gameId => games[gameId].includes(+storeId))
+                    && includedPrefectures.includes(stores[storeId].prefecture)
+                );
 
                 for (const storeId of Object.keys(markers)) {
                     if (selectedStores.includes(storeId)) {
@@ -553,13 +554,7 @@
                     includedPrefectures.sort((a, b) => a - b);
                     autoSave();
 
-                    for (const storeId of Object.keys(stores)) {
-                        if (includedPrefectures.includes(stores[storeId].prefecture)) {
-                            layer.addLayer(markers[storeId]);
-                        } else {
-                            layer.removeLayer(markers[storeId]);
-                        }
-                    }
+                    redraw();
                 });
             }
 
