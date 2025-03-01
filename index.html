@@ -333,7 +333,7 @@
             if (value === null) {
                 return defaultValue;
             }
-            
+
             return JSON.parse(value);
         };
 
@@ -512,14 +512,8 @@
                 markers[storeId] = createMarker(storeId);
             }
 
-            const checked = {
-                88: false,
-                96: false,
-                109: false
-            }
-
             const autoSave = () => {
-                localStorage.setItem("checked", JSON.stringify(checked));
+                localStorage.setItem("required-game", JSON.stringify(requiredGame));
                 localStorage.setItem("favorites", JSON.stringify(favorites));
                 localStorage.setItem("center", JSON.stringify({
                     ...map.getCenter(),
@@ -547,27 +541,28 @@
             const gameSelectForm = document.getElementById("game-select");
             for (const checkbox of gameSelectForm.querySelectorAll("input")) {
                 checkbox.addEventListener("change", () => {
-                    checked[checkbox.value] = checkbox.checked;
+                    requiredGame[checkbox.value] = checkbox.checked;
                     autoSave();
 
                     redraw();
                 });
             }
 
-            try {
-                const saved = JSON.parse(localStorage.getItem("checked"));
-                for (const [gameId, checked] of Object.entries(saved)) {
-                    const checkbox = gameSelectForm.querySelector(`input[value="${gameId}"]`);
-                    if (checkbox) {
-                        checkbox.checked = checked;
-                    }
+            const requiredGame = restoreObject("required-game", {
+                88: false,
+                96: false,
+                109: false
+            });
+
+            for (const [gameId, required] of Object.entries(requiredGame)) {
+                const checkbox = gameSelectForm.querySelector(`input[value="${gameId}"]`);
+                if (checkbox) {
+                    checkbox.checked = required;
                 }
-            } catch (error) {
-                localStorage.removeItem("checked");
-            } finally {
-                redraw();
-                map.addLayer(layer);
             }
+            
+            redraw();
+            map.addLayer(layer);
         });
     </script>
 
