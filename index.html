@@ -446,14 +446,10 @@
                 return marker;
             };
 
-            const addMarkers = (storeIds) => {
-                for (const storeId of storeIds) {
-                    const marker = createMarker(storeId);
-                    layer.addLayer(marker);
-                }
-
-                map.addLayer(layer);
-            };
+            const markers = {};
+            for (const storeId of Object.keys(stores)) {
+                markers[storeId] = createMarker(storeId);
+            }
 
             const checked = {
                 88: false,
@@ -473,8 +469,13 @@
                     return selectedGames.every(gameId => games[gameId].includes(+storeId));
                 });
 
-                layer.clearLayers();
-                addMarkers(selectedStores);
+                for (const storeId of Object.keys(markers)) {
+                    if (selectedStores.includes(storeId)) {
+                        layer.addLayer(markers[storeId]);
+                    } else {
+                        layer.removeLayer(markers[storeId]);
+                    }
+                }
             };
 
             const gameSelectForm = document.getElementById("game-select");
@@ -495,11 +496,11 @@
                         checkbox.checked = checked;
                     }
                 }
-
             } catch (error) {
                 localStorage.removeItem("checked");
             } finally {
                 redraw();
+                map.addLayer(layer);
             }
         });
     </script>
