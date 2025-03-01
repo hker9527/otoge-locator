@@ -324,7 +324,7 @@
         // Map of storeId -> favoriteType
         const favorites = (() => {
             try {
-                return JSON.parse(localStorage.getItem("favorites")) || {};
+                return JSON.parse(localStorage.getItem("favorites").toString());
             } catch (error) {
                 localStorage.removeItem("favorites");
                 return {};
