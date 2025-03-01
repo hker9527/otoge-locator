@@ -146,35 +146,38 @@
                 localStorage.setItem("checked", JSON.stringify(checked));
             };
 
-            const gameSelectForm = document.getElementById("gameSelect");
-            for (const checkbox of gameSelectForm.querySelectorAll("input")) {
-                checkbox.addEventListener("change", () => {
+            const redraw = () => {
                     const formData = new FormData(gameSelectForm);
                     const selectedGames = formData.getAll("game");
                     const selectedStores = Object.keys(stores).filter(storeId => {
                         return selectedGames.every(gameId => games[gameId].includes(+storeId));
                     });
 
+                layer.clearLayers();
                     addMarkers(selectedStores);
 
                     checked[checkbox.value] = checkbox.checked;
                     autoSave();
-                });
+            };
+
+            const gameSelectForm = document.getElementById("game-select");
+            for (const checkbox of gameSelectForm.querySelectorAll("input")) {
+                checkbox.addEventListener("change", redraw);
             }
 
             try {
                 const saved = JSON.parse(localStorage.getItem("checked"));
-                if (saved) {
                     for (const [gameId, checked] of Object.entries(saved)) {
                         const checkbox = gameSelectForm.querySelector(`input[value="${gameId}"]`);
                         if (checkbox) {
                             checkbox.checked = checked;
-                            checkbox.dispatchEvent(new Event("change"));
-                        }
                     }
                 }
+
             } catch (error) {
                 localStorage.removeItem("checked");
+            } finally {
+                redraw();
             }
         });
     </script>
