@@ -279,19 +279,19 @@
         </form>
         <form id="game-select">
             <small>Must have...</small>
-        <label>
-            <input type="checkbox" name="game" value="88">
-            Ongeki
-        </label>
-        <label>
-            <input type="checkbox" name="game" value="96">
-            Maimai
-        </label>
-        <label>
-            <input type="checkbox" name="game" value="109">
-            Chunithm
-        </label>
-    </form>
+            <label>
+                <input type="checkbox" name="game" value="88">
+                Ongeki
+            </label>
+            <label>
+                <input type="checkbox" name="game" value="96">
+                Maimai
+            </label>
+            <label>
+                <input type="checkbox" name="game" value="109">
+                Chunithm
+            </label>
+        </form>
     </div>
 
     <div id="map"></div>
@@ -315,11 +315,11 @@
     </template>
 
     <script>
-            const gameNames = {
-                88: "Ongeki",
-                96: "Maimai",
-                109: "Chunithm"
-            };
+        const gameNames = {
+            88: "Ongeki",
+            96: "Maimai",
+            109: "Chunithm"
+        };
 
         // Map of storeId -> favoriteType
         const favorites = (() => {
@@ -352,10 +352,10 @@
             const prefectureColors =
                 [1, 0, 1, 2, 3, 0, 1, 0, 2, 3, 1, 3, 2, 1, 2, 3, 1, 0, 3, 0, 2, 2, 3, 0, 1, 3, 0, 1, 2, 1, 2, 3, 0, 1, 0, 3, 2, 0, 1, 1, 0, 2, 3, 2, 1, 0, 2]
                     .map(color => [
-                "red",
-                "green",
-                "blue",
-                "gold"
+                        "red",
+                        "green",
+                        "blue",
+                        "gold"
                     ][color]);
 
             try {
@@ -467,17 +467,17 @@
             };
 
             const redraw = () => {
-                    const formData = new FormData(gameSelectForm);
-                    const selectedGames = formData.getAll("game");
-                    const selectedStores = Object.keys(stores).filter(storeId => {
-                        return selectedGames.every(gameId => games[gameId].includes(+storeId));
-                    });
+                const formData = new FormData(gameSelectForm);
+                const selectedGames = formData.getAll("game");
+                const selectedStores = Object.keys(stores).filter(storeId => {
+                    return selectedGames.every(gameId => games[gameId].includes(+storeId));
+                });
 
                 layer.clearLayers();
-                    addMarkers(selectedStores);
+                addMarkers(selectedStores);
 
-                    checked[checkbox.value] = checkbox.checked;
-                    autoSave();
+                checked[checkbox.value] = checkbox.checked;
+                autoSave();
             };
 
             const gameSelectForm = document.getElementById("game-select");
@@ -487,10 +487,10 @@
 
             try {
                 const saved = JSON.parse(localStorage.getItem("checked"));
-                    for (const [gameId, checked] of Object.entries(saved)) {
-                        const checkbox = gameSelectForm.querySelector(`input[value="${gameId}"]`);
-                        if (checkbox) {
-                            checkbox.checked = checked;
+                for (const [gameId, checked] of Object.entries(saved)) {
+                    const checkbox = gameSelectForm.querySelector(`input[value="${gameId}"]`);
+                    if (checkbox) {
+                        checkbox.checked = checked;
                     }
                 }
 
