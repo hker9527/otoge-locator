@@ -319,6 +319,24 @@
     </template>
 
     <script>
+        const restore = (name, defaultValue) => {
+            try {
+                return localStorage.getItem(name).toString();
+            } catch (error) {
+                localStorage.removeItem(name);
+                return defaultValue;
+            }
+        };
+
+        const restoreObject = (name, defaultValue) => {
+            const value = restore(name, null);
+            if (value === null) {
+                return defaultValue;
+            }
+            
+            return JSON.parse(value);
+        };
+
         const gameNames = {
             88: "Ongeki",
             96: "Maimai",
@@ -326,27 +344,13 @@
         };
 
         // Map of storeId -> favoriteType
-        const favorites = (() => {
-            try {
-                return JSON.parse(localStorage.getItem("favorites").toString());
-            } catch (error) {
-                localStorage.removeItem("favorites");
-                return {};
-            }
-        })();
-
-        const center = (() => {
-            try {
-                return JSON.parse(localStorage.getItem("center").toString());
-            } catch (error) {
-                localStorage.removeItem("center");
-                return {
-                    lat: 36.01,
-                    lng: 138,
-                    zoom: 5
-                }
-            }
-        })();
+        const favorites = restoreObject("favorites", {});
+        const center = restoreObject("center", {
+            lat: 36.01,
+            lng: 138,
+            zoom: 5
+        });
+        let mapStyle = restore("map-style", "Original");
 
         document.addEventListener("DOMContentLoaded", async () => {
             let games = {};
@@ -392,7 +396,14 @@
             const layer = L.markerClusterGroup();
 
             L.control.layers(baseLayers, null, { position: "bottomleft" }).addTo(map);
-            baseLayers["Original"].addTo(map);
+            baseLayers[mapStyle].addTo(map);
+
+            map.on('baselayerchange', (e) => {
+                const url = e.layer._url;
+                const style = Object.keys(baseLayers).find(key => baseLayers[key]._url === url);
+                mapStyle = style;
+                autoSave();
+            });
 
             L.control.locate({
                 locateOptions: {
@@ -514,6 +525,7 @@
                     ...map.getCenter(),
                     zoom: map.getZoom()
                 }));
+                localStorage.setItem("map-style", mapStyle);
             };
 
             const redraw = () => {
