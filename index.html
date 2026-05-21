@@ -538,6 +538,107 @@
             
             redraw();
             map.addLayer(layer);
+
+            const SearchControl = L.Control.extend({
+                options: { position: "topleft" },
+                onAdd(map) {
+                    const container = L.DomUtil.create("div", "leaflet-control");
+                    container.style.cssText = "background:white; border-radius:4px; box-shadow:0 1px 5px rgba(0,0,0,.4); min-width:220px;";
+                    L.DomEvent.disableClickPropagation(container);
+                    L.DomEvent.disableScrollPropagation(container);
+
+                    const inputRow = L.DomUtil.create("div", "", container);
+                    inputRow.style.cssText = "display:flex; align-items:center; padding:4px 8px; gap:4px;";
+                    const icon = L.DomUtil.create("span", "", inputRow);
+                    icon.textContent = "🔍";
+                    icon.style.fontSize = "0.85em";
+                    const input = L.DomUtil.create("input", "", inputRow);
+                    input.type = "text";
+                    input.placeholder = "Search arcades or places…";
+                    input.setAttribute("aria-label", "Search arcades or places");
+                    input.style.cssText = "border:none; outline:none; width:180px; font-size:0.85em; background:transparent;";
+
+                    const dropdown = L.DomUtil.create("div", "", container);
+                    dropdown.style.cssText = "max-height:250px; overflow-y:auto; border-top:1px solid #eee; display:none;";
+
+                    const sectionHeader = (title) => {
+                        const h = document.createElement("div");
+                        h.textContent = title;
+                        h.style.cssText = "padding:3px 8px; font-size:0.7em; font-weight:700; color:#888; background:#f8f8f8; text-transform:uppercase; letter-spacing:.05em;";
+                        return h;
+                    };
+
+                    const resultRow = (label, onClick) => {
+                        const el = document.createElement("div");
+                        el.textContent = label;
+                        el.style.cssText = "padding:5px 10px; cursor:pointer; font-size:0.8em; border-bottom:1px solid #f0f0f0;";
+                        el.addEventListener("mouseenter", () => el.style.background = "#f0f7ff");
+                        el.addEventListener("mouseleave", () => el.style.background = "");
+                        el.addEventListener("click", () => { onClick(); dropdown.style.display = "none"; input.value = label; });
+                        return el;
+                    };
+
+                    let nominatimTimer = null;
+                    let lastNominatimResults = [];
+
+                    const render = (arcadeResults, placeResults) => {
+                        dropdown.innerHTML = "";
+                        if (!arcadeResults.length && !placeResults.length) { dropdown.style.display = "none"; return; }
+                        if (arcadeResults.length) {
+                            dropdown.appendChild(sectionHeader("Arcades"));
+                            for (const { id, name, lat, lon } of arcadeResults) {
+                                dropdown.appendChild(resultRow(name, () => {
+                                    const marker = markers[id];
+                                    if (marker) {
+                                        layer.zoomToShowLayer(marker, () => marker.openPopup());
+                                    }
+                                }));
+                            }
+                        }
+                        if (placeResults.length) {
+                            dropdown.appendChild(sectionHeader("Places"));
+                            for (const { label, lat, lon } of placeResults) {
+                                dropdown.appendChild(resultRow(label, () => map.setView([lat, lon], 13)));
+                            }
+                        }
+                        dropdown.style.display = "block";
+                    };
+
+                    const searchArcades = (q) => {
+                        const lq = q.toLowerCase();
+                        return Object.entries(stores)
+                            .filter(([, s]) => s.name.toLowerCase().includes(lq))
+                            .slice(0, 6)
+                            .map(([id, s]) => ({ id, name: s.name, lat: s.lat, lon: s.lon }));
+                    };
+
+                    input.addEventListener("input", () => {
+                        const q = input.value.trim();
+                        if (!q) { lastNominatimResults = []; dropdown.style.display = "none"; return; }
+                        render(searchArcades(q), lastNominatimResults);
+                        clearTimeout(nominatimTimer);
+                        nominatimTimer = setTimeout(async () => {
+                            try {
+                                const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&countrycodes=jp&limit=5`);
+                                const data = await res.json();
+                                lastNominatimResults = data.map(r => ({
+                                    label: r.display_name.split(",").slice(0, 3).join(", "),
+                                    lat: parseFloat(r.lat),
+                                    lon: parseFloat(r.lon)
+                                }));
+                                if (input.value.trim()) render(searchArcades(input.value.trim()), lastNominatimResults);
+                            } catch {}
+                        }, 400);
+                    });
+
+                    document.addEventListener("click", (e) => {
+                        if (!container.contains(e.target)) dropdown.style.display = "none";
+                    });
+
+                    return container;
+                }
+            });
+            new SearchControl().addTo(map);
         });
     </script>
 
