@@ -61,7 +61,8 @@
             overflow-y: auto;
         }
 
-        #prefecture-select fieldset label {
+        #prefecture-select fieldset label,
+        #game-select label {
             display: block;
         }
 
@@ -190,19 +191,10 @@
             </div>
         </form>
         <form id="game-select">
-            <small>Must have...</small>
-            <label>
-                <input type="checkbox" name="game" value="88">
-                Ongeki
-            </label>
-            <label>
-                <input type="checkbox" name="game" value="96">
-                Maimai
-            </label>
-            <label>
-                <input type="checkbox" name="game" value="109">
-                Chunithm
-            </label>
+            <small>Required games (AND)</small>
+            <label><input type="checkbox" name="game" value="88"> Ongeki</label>
+            <label><input type="checkbox" name="game" value="96"> Maimai</label>
+            <label><input type="checkbox" name="game" value="109"> Chunithm</label>
         </form>
     </div>
 
