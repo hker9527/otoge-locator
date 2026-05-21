@@ -39,7 +39,7 @@
             top: 10px;
             right: 10px;
             z-index: 1000;
-            width: 8em;
+            width: 12em;
             display: flex;
             flex-direction: column;
             gap: 1em;
@@ -56,9 +56,27 @@
             font-size: 0.8em;
         }
 
-        #prefecture-select>div {
-            height: 8em;
+        #prefecture-select>.prefecture-list {
+            height: 12em;
             overflow-y: auto;
+        }
+
+        #prefecture-select fieldset label {
+            display: block;
+        }
+
+        #prefecture-select fieldset {
+            border: none;
+            padding: 0;
+            margin: 0 0 0.25em 0;
+        }
+
+        #prefecture-select fieldset legend {
+            font-size: 0.7em;
+            font-weight: 600;
+            color: #555;
+            padding: 0;
+            margin-bottom: 0.1em;
         }
 
         div[class*=glyph]>.mdi {
@@ -90,195 +108,85 @@
     <div id="right-menu">
         <form id="prefecture-select">
             <small>Prefecture</small>
-            <div>
-                <label>
-                    <input type="checkbox" name="prefecture" value="0">
-                    北海道
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="1">
-                    青森県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="2">
-                    岩手県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="3">
-                    宮城県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="4">
-                    秋田県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="5">
-                    山形県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="6">
-                    福島県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="7">
-                    茨城県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="8">
-                    栃木県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="9">
-                    群馬県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="10">
-                    埼玉県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="11">
-                    千葉県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="12">
-                    東京都
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="13">
-                    神奈川県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="14">
-                    新潟県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="15">
-                    富山県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="16">
-                    石川県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="17">
-                    福井県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="18">
-                    山梨県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="19">
-                    長野県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="20">
-                    岐阜県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="21">
-                    静岡県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="22">
-                    愛知県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="23">
-                    三重県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="24">
-                    滋賀県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="25">
-                    京都府
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="26">
-                    大阪府
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="27">
-                    兵庫県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="28">
-                    奈良県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="29">
-                    和歌山県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="30">
-                    鳥取県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="31">
-                    島根県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="32">
-                    岡山県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="33">
-                    広島県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="34">
-                    山口県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="35">
-                    徳島県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="36">
-                    香川県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="37">
-                    愛媛県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="38">
-                    高知県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="39">
-                    福岡県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="40">
-                    佐賀県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="41">
-                    長崎県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="42">
-                    熊本県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="43">
-                    大分県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="44">
-                    宮崎県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="45">
-                    鹿児島県
-                </label>
-                <label>
-                    <input type="checkbox" name="prefecture" value="46">
-                    沖縄県
-                </label>
+            <div class="d-flex gap-1 mb-1">
+                <button type="button" id="pref-select-all" class="btn btn-sm btn-outline-secondary flex-fill">All</button>
+                <button type="button" id="pref-deselect-all" class="btn btn-sm btn-outline-secondary flex-fill">None</button>
+            </div>
+            <div class="prefecture-list">
+                <fieldset>
+                    <legend>北海道</legend>
+                    <label><input type="checkbox" name="prefecture" value="0"> 北海道</label>
+                </fieldset>
+                <fieldset>
+                    <legend>東北</legend>
+                    <label><input type="checkbox" name="prefecture" value="1"> 青森県</label>
+                    <label><input type="checkbox" name="prefecture" value="2"> 岩手県</label>
+                    <label><input type="checkbox" name="prefecture" value="3"> 宮城県</label>
+                    <label><input type="checkbox" name="prefecture" value="4"> 秋田県</label>
+                    <label><input type="checkbox" name="prefecture" value="5"> 山形県</label>
+                    <label><input type="checkbox" name="prefecture" value="6"> 福島県</label>
+                </fieldset>
+                <fieldset>
+                    <legend>関東</legend>
+                    <label><input type="checkbox" name="prefecture" value="7"> 茨城県</label>
+                    <label><input type="checkbox" name="prefecture" value="8"> 栃木県</label>
+                    <label><input type="checkbox" name="prefecture" value="9"> 群馬県</label>
+                    <label><input type="checkbox" name="prefecture" value="10"> 埼玉県</label>
+                    <label><input type="checkbox" name="prefecture" value="11"> 千葉県</label>
+                    <label><input type="checkbox" name="prefecture" value="12"> 東京都</label>
+                    <label><input type="checkbox" name="prefecture" value="13"> 神奈川県</label>
+                </fieldset>
+                <fieldset>
+                    <legend>甲信越・北陸</legend>
+                    <label><input type="checkbox" name="prefecture" value="14"> 新潟県</label>
+                    <label><input type="checkbox" name="prefecture" value="15"> 富山県</label>
+                    <label><input type="checkbox" name="prefecture" value="16"> 石川県</label>
+                    <label><input type="checkbox" name="prefecture" value="17"> 福井県</label>
+                    <label><input type="checkbox" name="prefecture" value="18"> 山梨県</label>
+                    <label><input type="checkbox" name="prefecture" value="19"> 長野県</label>
+                </fieldset>
+                <fieldset>
+                    <legend>東海</legend>
+                    <label><input type="checkbox" name="prefecture" value="20"> 岐阜県</label>
+                    <label><input type="checkbox" name="prefecture" value="21"> 静岡県</label>
+                    <label><input type="checkbox" name="prefecture" value="22"> 愛知県</label>
+                    <label><input type="checkbox" name="prefecture" value="23"> 三重県</label>
+                </fieldset>
+                <fieldset>
+                    <legend>近畿</legend>
+                    <label><input type="checkbox" name="prefecture" value="24"> 滋賀県</label>
+                    <label><input type="checkbox" name="prefecture" value="25"> 京都府</label>
+                    <label><input type="checkbox" name="prefecture" value="26"> 大阪府</label>
+                    <label><input type="checkbox" name="prefecture" value="27"> 兵庫県</label>
+                    <label><input type="checkbox" name="prefecture" value="28"> 奈良県</label>
+                    <label><input type="checkbox" name="prefecture" value="29"> 和歌山県</label>
+                </fieldset>
+                <fieldset>
+                    <legend>中国</legend>
+                    <label><input type="checkbox" name="prefecture" value="30"> 鳥取県</label>
+                    <label><input type="checkbox" name="prefecture" value="31"> 島根県</label>
+                    <label><input type="checkbox" name="prefecture" value="32"> 岡山県</label>
+                    <label><input type="checkbox" name="prefecture" value="33"> 広島県</label>
+                    <label><input type="checkbox" name="prefecture" value="34"> 山口県</label>
+                </fieldset>
+                <fieldset>
+                    <legend>四国</legend>
+                    <label><input type="checkbox" name="prefecture" value="35"> 徳島県</label>
+                    <label><input type="checkbox" name="prefecture" value="36"> 香川県</label>
+                    <label><input type="checkbox" name="prefecture" value="37"> 愛媛県</label>
+                    <label><input type="checkbox" name="prefecture" value="38"> 高知県</label>
+                </fieldset>
+                <fieldset>
+                    <legend>九州・沖縄</legend>
+                    <label><input type="checkbox" name="prefecture" value="39"> 福岡県</label>
+                    <label><input type="checkbox" name="prefecture" value="40"> 佐賀県</label>
+                    <label><input type="checkbox" name="prefecture" value="41"> 長崎県</label>
+                    <label><input type="checkbox" name="prefecture" value="42"> 熊本県</label>
+                    <label><input type="checkbox" name="prefecture" value="43"> 大分県</label>
+                    <label><input type="checkbox" name="prefecture" value="44"> 宮崎県</label>
+                    <label><input type="checkbox" name="prefecture" value="45"> 鹿児島県</label>
+                    <label><input type="checkbox" name="prefecture" value="46"> 沖縄県</label>
+                </fieldset>
             </div>
         </form>
         <form id="game-select">
@@ -561,6 +469,23 @@
             for (const checkbox of prefectureSelectForm.querySelectorAll("input")) {
                 checkbox.checked = includedPrefectures.includes(+checkbox.value);
             }
+
+            document.getElementById("pref-select-all").addEventListener("click", () => {
+                for (const cb of prefectureSelectForm.querySelectorAll("input")) {
+                    cb.checked = true;
+                    if (!includedPrefectures.includes(+cb.value)) includedPrefectures.push(+cb.value);
+                }
+                includedPrefectures.sort((a, b) => a - b);
+                autoSave();
+                redraw();
+            });
+
+            document.getElementById("pref-deselect-all").addEventListener("click", () => {
+                for (const cb of prefectureSelectForm.querySelectorAll("input")) cb.checked = false;
+                includedPrefectures.length = 0;
+                autoSave();
+                redraw();
+            });
 
             // Game select
             const requiredGame = restoreObject("required-game", {
