@@ -45,7 +45,8 @@
             gap: 1em;
         }
 
-        #right-menu>form {
+        #right-menu>form,
+        #right-menu>#result-count {
             background-color: white;
             border: 1px solid #6c757d;
             border-radius: 0.25rem;
@@ -196,6 +197,7 @@
             <label><input type="checkbox" name="game" value="96"> Maimai</label>
             <label><input type="checkbox" name="game" value="109"> Chunithm</label>
         </form>
+        <div id="result-count" style="font-size:0.75em; color:#666; text-align:right;"></div>
     </div>
 
     <div id="map"></div>
@@ -437,10 +439,16 @@
             const redraw = () => {
                 const formData = new FormData(gameSelectForm);
                 const selectedGames = formData.getAll("game");
-                const selectedStores = Object.keys(stores).filter(storeId => 
+                const selectedStores = Object.keys(stores).filter(storeId =>
                     selectedGames.every(gameId => games[gameId].includes(+storeId))
                     && includedPrefectures.includes(stores[storeId].prefecture)
                 );
+
+                const total = Object.keys(stores).length;
+                document.getElementById("result-count").textContent =
+                    selectedStores.length === total
+                        ? `${selectedStores.length} arcades`
+                        : `${selectedStores.length} / ${total} arcades`;
 
                 for (const storeId of Object.keys(markers)) {
                     if (selectedStores.includes(storeId)) {
