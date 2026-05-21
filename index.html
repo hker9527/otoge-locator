@@ -332,6 +332,15 @@
                 console.error("Error loading data:", error);
             }
 
+            const typeLabels = {
+                "heart": "Favorite",
+                "star": "Want to visit",
+                "alert": "Note / Alert",
+                "check-bold": "Visited",
+                "close-thick": "Not interested",
+                "help-circle": "Unsure"
+            };
+
             const getIcon = (storeId) => {
                 const store = stores[storeId];
                 const favoriteType = favorites[storeId];
@@ -380,6 +389,8 @@
                     const button = document.createElement("button");
                     button.type = "button";
                     button.classList.add("btn", "text-light", `btn-${favoriteType === type ? "success" : "secondary"}`);
+                    button.setAttribute("aria-label", typeLabels[type]);
+                    button.setAttribute("title", typeLabels[type]);
                     button.addEventListener("click", () => {
                         if (button.classList.contains("btn-success")) {
                             delete favorites[storeId];
